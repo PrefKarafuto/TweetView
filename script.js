@@ -90,8 +90,10 @@ async function loadTweetsFromURL(bbs, dat) {
         tweetElement.innerHTML = `
           <div class="tweet-header">
             <div class="profile-icon"></div>
-            <span class="name">${name}</span>
-            <span class="userid">@${userid}</span>
+            <div class="user-info">
+              <span class="name">${name}</span><br>
+              <span class="userid">@${userid}</span>
+            </div>
           </div>
           <div class="tweet-content">${contentWithLinks}</div>
           <span class="timestamp">${formatTimestamp(timestamp)}</span>

@@ -3,6 +3,7 @@
 Made by GPT-3.5
 ## 使い方  
 0ch+のtestフォルダと同じディレクトリに、TweetViewフォルダをおいてください。  
+注：これは試験的なものであり、仕様は今後変更されます。
 ```
 https://example.com/TweetView/read.html?bbs=mybbs&dat=123456789
 ```

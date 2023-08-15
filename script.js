@@ -64,6 +64,18 @@ async function loadTweetsFromURL(bbs, dat) {
         tweetReplies[tweetId] = []; // Initialize replies for the tweet
         for (let j = i - 1; j >= 0; j--) {
           const replyTargetId = extractReplyTarget(tweets[j].split('<>')[3]);
+          if (replyTargetId === `${tweetId}`) {
+            const replyUserId = userIdMap[j + 1] || (j + 1);
+            const replyContent = tweets[j].split('<>')[3];
+            const replyTweet = `
+              <div class="reply-tweet" name="reply-${j + 1}">
+                <a href="#${j + 1}" class="reply-link">@${replyUserId}</a>
+                ${replyContent}
+              </div>
+            `;
+            tweetReplies[tweetId].unshift(replyTweet); // Add reply to the beginning of the list
+            replyCount++; // Increment the reply count
+          }
         }
         replyCounts[tweetId] = replyCount; // Store the reply count for the tweet
 
@@ -75,7 +87,6 @@ async function loadTweetsFromURL(bbs, dat) {
         }
         const contentWithLinks = replaceEntityReferences(content, userIdMap)
           .replace(/(https?:\/\/([^\s][^<]+))/g, '<a class="external-link" href="$1" target="_blank">$2</a>');
-        const replyList =
         tweetElement.innerHTML = `
           <div class="tweet-header">
             <div class="profile-icon"></div>
@@ -85,7 +96,7 @@ async function loadTweetsFromURL(bbs, dat) {
           <div class="tweet-content">${contentWithLinks}</div>
           <span class="timestamp">${formatTimestamp(timestamp)}</span>
           <div class="reply-count">${replyCounts[tweetId]} リプライ</div>
-          <div class="reply-list">${replyList}</div>
+          <div class="reply-list"></div>
           ${replyTo}
         `;
 

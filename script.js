@@ -47,7 +47,8 @@ async function loadTweetsFromURL(bbs, dat) {
     const replyCounts = {};
 
     for (let i = 0; i < tweets.length; i++) {
-      const tweetData = tweets[i].replace(/<b>|<\/b>/g,'').split('<>');
+      const tweetData = tweets[i].replace(/<br>/g,'\n').replace(/<[A-Za-z0-9_"':\/?=& ]+>/g,'')
+      .replace(/\n/g,'<br>').split('<>');
       if (tweetData.length >= 5) {
         const name = tweetData[0];
         const tweetId = i + 1;

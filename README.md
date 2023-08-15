@@ -1,5 +1,6 @@
 # TweetView
-ツイッタータイムライン風の0ch+用read.html
+ツイッタータイムライン風の0ch+用read.html  
+Made by GPT-3.5
 ## 使い方  
 0ch+のtestフォルダと同じディレクトリに、TweetViewフォルダをおいてください。  
 ```

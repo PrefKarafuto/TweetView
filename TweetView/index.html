@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DATファイル選択ページ">
+  <title>DATファイル選択</title>
+  <style>
+    /* 元のデザインスタイルに戻す */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      padding: 20px;
+      background-color: #7289DA;
+      color: #FFF;
+      margin: 0;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      padding: 10px;
+      border-bottom: 1px solid #2C2F33;
+      transition: background-color 0.3s;
+    }
+    li:hover {
+      background-color: #2C2F33;
+    }
+    a {
+      text-decoration: none;
+      color: #7289DA;
+      font-weight: bold;
+    }
+    @media screen and (max-width: 480px) {
+      li {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>DATファイル選択</h1>
+  <ul id="datList"></ul>
+
+  <script>
+    const datListDiv = document.getElementById('datList');
+
+    // URLのクエリパラメータからbbsnameを取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const bbsName = urlParams.get('bbs');
+
+    if (!bbsName) {
+      console.error('bbsname not specified.');
+      datListDiv.innerHTML = '<p style="color: red;">bbsnameが指定されていません。</p>';
+    } else {
+      fetch(`../${bbsName}/subject.txt`)
+        .then(response => response.arrayBuffer())
+        .then(buffer => {
+          const decoder = new TextDecoder('Shift-JIS');
+          const data = decoder.decode(buffer);
+          const lines = data.split('\n');
+          lines.forEach(line => {
+            const [datFileName, title] = line.split('<>');
+            const datLink = document.createElement('a');
+            datLink.href = `read.html?bbs=${bbsName}&dat=${datFileName.replace('.dat','')}`;
+            datLink.textContent = title;
+            const datListItem = document.createElement('li');
+            datListItem.appendChild(datLink);
+            datListDiv.appendChild(datListItem);
+          });
+        });
+    }
+  </script>
+</body>
+</html>
